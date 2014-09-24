@@ -5,9 +5,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-
 public class MainMenuScreen implements Screen{
 
 	MyGdxGame game;
@@ -28,12 +25,12 @@ public class MainMenuScreen implements Screen{
 	        game.batch.setProjectionMatrix(camera.combined);
 
 	        game.batch.begin();
-	        game.font.draw(game.batch, "Welcome to Drop!!! ", 100, 150);
+	        game.font.draw(game.batch, "Welcome to Shooter!!! ", 100, 150);
 	        game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
 	        game.batch.end();
 
 	        if (Gdx.input.isTouched()) {
-	            game.setScreen(new ReferenceScreen(game));
+	            game.setScreen(new GameScreen(game));
 	            dispose();
 	        }
 	}

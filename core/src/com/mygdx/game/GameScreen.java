@@ -6,7 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad.TouchpadStyle;
 import com.badlogic.gdx.utils.Array;
@@ -26,6 +28,7 @@ public class GameScreen implements  Screen{
 	Touchpad rightTouchPad;
 	Stage touchPadStage;
 	
+	Skin background;
 	//variables for creating the main character
 	Hero hero;
 	Array<Projectiles> missiles;
@@ -33,6 +36,7 @@ public class GameScreen implements  Screen{
 	Villain villain;
 	//variable to manage shooting. Prevent stream of bullets;
 	boolean touchShot;
+	
 	public GameScreen(MyGdxGame game) {
 		this.game = game;
 		camera = new OrthographicCamera();
@@ -45,9 +49,18 @@ public class GameScreen implements  Screen{
 		missiles = new Array<Projectiles>();
 		touchShot = false;
 		
+		createAnimatedBackground();
 		createTouchPads();
+		
 	}
 	
+	private void createAnimatedBackground() {
+		background = new Skin();
+		background.add("back", new Texture(Gdx.files.internal("parallax_background_layer_back.png")));
+		background.add("middle", new Texture(Gdx.files.internal("parallax_background_layer_mid.png")));
+		background.add("front", new Texture(Gdx.files.internal("parallax_background_layer_front.png")));
+	}
+
 	private void createTouchPads() {
 		TouchpadStyle touchStyle = new TouchpadStyle();
 		
@@ -59,8 +72,7 @@ public class GameScreen implements  Screen{
        
 		//setBounds(x,y,width,height)
         leftTouchPad.setBounds(GameConstants.TOUCH_X, GameConstants.TOUCH_Y, GameConstants.TOUCH_SIDE_LENGTH, GameConstants.TOUCH_SIDE_LENGTH);
-        rightTouchPad.setBounds(GameConstants.WIDTH-(GameConstants.TOUCH_X+GameConstants.TOUCH_SIDE_LENGTH), GameConstants.TOUCH_Y, GameConstants.TOUCH_SIDE_LENGTH, GameConstants.TOUCH_SIDE_LENGTH);
-        
+        rightTouchPad.setBounds(Gdx.graphics.getWidth()-(GameConstants.TOUCH_X+GameConstants.TOUCH_SIDE_LENGTH), GameConstants.TOUCH_Y, GameConstants.TOUCH_SIDE_LENGTH, GameConstants.TOUCH_SIDE_LENGTH);
  
         //Create a Stage and add TouchPad
         touchPadStage = new Stage();
@@ -95,11 +107,14 @@ public class GameScreen implements  Screen{
  
 	     camera.update();
 
-	     touchPadStage.act(Gdx.graphics.getDeltaTime());
-	     touchPadStage.draw();
 	     
 	     game.batch.setProjectionMatrix(camera.combined);	        
 	     game.batch.begin();   
+
+	     game.batch.draw(background.getRegion("back"), 0, 0);
+	     game.font.setScale(3);
+	     game.font.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+	     game.font.draw(game.batch,"Score:"+game.score, 10, GameConstants.HEIGHT);
 	     hero.render(delta);
 	     villains.checkCollisions(hero, missiles);
 	     villains.generate();
@@ -118,7 +133,10 @@ public class GameScreen implements  Screen{
 	    	 p.move();
 	     }
 	     game.batch.end();
-	     
+
+	     touchPadStage.act(Gdx.graphics.getDeltaTime());
+	     touchPadStage.draw();
+
 	     handleInput();
 
 
@@ -127,7 +145,6 @@ public class GameScreen implements  Screen{
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

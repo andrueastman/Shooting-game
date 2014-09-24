@@ -2,11 +2,7 @@ package com.mygdx.game.characters;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
-
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.mygdx.game.GameConstants;
@@ -56,10 +52,10 @@ public class VillainManager {
 			v.render(delta);
 		}
 	}
-	public boolean checkOffScreen(Iterator v, Villain c) {
-		if(c.getX()+c.getWidth()< 0){
-				
+	public boolean checkOffScreen(Iterator<Villain> v, Villain c) {
+		if(c.getX()+c.getWidth()< 0){			
 				v.remove();
+				game.score -=20;
 				VILLAIN_POOL.free(c);
 				return true;
 			}			
@@ -72,6 +68,7 @@ public class VillainManager {
 			Villain v = it.next();
 			if(v.getBounds().overlaps(h.getBounds())) {
 				//do sth about points
+				game.score -=5;
 				h.reset();
 				it.remove();
 				continue;
@@ -86,6 +83,7 @@ public class VillainManager {
 	public boolean checkProjectileCollision(Array<Projectiles> a, Villain v) {
 		for(Projectiles b: a) {
 			if(v.getBounds().overlaps(b.getBounds())) {
+				game.score+=10;
 				b.beyond = true;
 				return true;
 			}

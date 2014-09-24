@@ -3,6 +3,7 @@ package com.mygdx.game;
 public class GameConstants {
 	public static int WIDTH = 800;
 	public static int HEIGHT = 480;
+	public static float ASPECT_RATIO = (float)WIDTH/(float)HEIGHT;
 	
 	//variables for creating the touchpads
 	public static int TOUCH_DEAD_ZONE = 10;

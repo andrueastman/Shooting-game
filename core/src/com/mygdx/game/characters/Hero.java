@@ -1,7 +1,6 @@
 package com.mygdx.game.characters;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.managers.ResourceManager;
 
